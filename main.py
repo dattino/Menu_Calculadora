@@ -19,9 +19,11 @@ def vista_menu():
     print('5. Area de un círculo')
     print('0. Exit')
 
+
 def volver_menu():
     input('\nPresione "Enter" para volver al menú...')
     return limpiar_consola()
+
 
 def calculadora_simple():
     limpiar_consola()
@@ -59,7 +61,6 @@ def sumatoria_promedio():
             print(f'La sumatoria es: {round(suma, 2)}')
             print(f'Su promedio es: {round(promedio, 2)}')
     return volver_menu()
-    
 
 
 def anio_bisiesto():
