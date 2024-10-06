@@ -1,7 +1,5 @@
 import os
 
-lista_historial = []
-
 
 def limpiar_consola():
     # Para Windows
@@ -15,34 +13,90 @@ def limpiar_consola():
 def vista_menu():
     print('\n--- Menú Calculadora ---')
     print('1. Calculadora Simple')
-    print('2. Promedio')
-    print('3. Comprobar Año bisiesto')
+    print('2. Calcular promedio')
+    print('3. Calcular área de un círculo')
     print('4. Comprobar el Mayor de 3 n°')
-    print('5. Area de un círculo')
+    print('5. Comprobar Año bisiesto')
     print('6. Historial')
-    print('0. Exit')
+    print('0. Salir')
+
+
+def vista_menu_historial():
+    print('\n--- Menú Historial ---')
+    print('1. Ver Historial')
+    print('2. Editar Historial')
+    print('3. Borar Entrada del Historial')
+    print('0. Volver')
 
 
 def volver_menu():
-    input('\nPresione "Enter" para volver al menú...')
+    input('\nPresione "Enter" para continuar...')
     return limpiar_consola()
 
 
-def historial(valor_almacenar):
-    if ((type(valor_almacenar) != None) & (valor_almacenar != len(lista_historial))):
-        lista_historial.append(valor_almacenar)
-    elif ((type(valor_almacenar) != None) & (valor_almacenar == len(lista_historial))):
-        lista_historial.append('Ingreso a "Ver el historial"')
-        n = 1
-        posicion = 1
-        while posicion != -1:
-            posicion = len(lista_historial) - n
-            print(lista_historial[posicion])
-            n = n + 1
+def agregar_historial(historial, nombre_aplicacion: str, resultado_almacenar: str):
+    funcion = nombre_aplicacion
+    descripcion = resultado_almacenar
+    entrada = {
+        'nombre': funcion,
+        'operación': descripcion,
+        'editado': False,
+    }
+    historial.append(entrada)
+    print(f'Entrada {funcion} agregada al historial')
     return volver_menu()
 
 
-def calculadora_simple():
+def ver_historial(historial):
+    limpiar_consola()
+    if not historial:
+        print('Historial no disponible.')
+        return
+
+    for index, entrada in enumerate(historial, start=1):
+        fue_editado = '✔️' if entrada['editado'] else '❌'
+        print(f'{index}. {entrada['nombre']} - Editado: {fue_editado}')
+        print(f'   Operación: {entrada['operación']}')
+    return volver_menu()
+
+
+def editar_historial(historial):
+    ver_historial(historial)
+    try:
+        index = int(input('>Ingrece el índice a editar: ')) - 1
+        if index < 0 or index >= len(historial):
+            print('Indice no disponible.')
+            return volver_menu()
+
+        entrada = historial[index]
+        entrada['nombre'] = input(
+            f'Ingrese el nuevo nombre (actual: {entrada['nombre']}): ') or entrada['nombre']
+        entrada['operación'] = input(
+            f'Ingrese la nueva operación (actual: {entrada['operación']}): ') or entrada['operación']
+        entrada['editado'] = True
+
+        print(f'TODO "{entrada["nombre"]}" actualizada correctamente.')
+    except ValueError:
+        print('Entrada errónea, porfavor ingrese un número.')
+    return volver_menu()
+
+
+def borrar_historial(historial):
+    ver_historial(historial)
+    try:
+        index = int(input('Ingrese el índice a borrar: ')) - 1
+        if index < 0 or index >= len(historial):
+            print('Indice no disponible.')
+            return volver_menu()
+
+        borrar_entrada = historial.pop(index)
+        print(f'Entrada "{borrar_entrada["nombre"]}" borrada correctamente.')
+    except ValueError:
+        print('Entrada errónea, porfavor ingrese un número.')
+    return volver_menu()
+
+
+def calculadora_simple(historial):
     limpiar_consola()
     num_1 = int(input('Ingrese un número '))
     operacion = input('Ingrese una operacion matemética (+, -, *, /) ')
@@ -62,10 +116,10 @@ def calculadora_simple():
             else:
                 resultado = (f'{num_1} / {num_2} = {num_1 / num_2}')
     print(resultado)
-    return (f'Ingreso a "Calculadora Simple" {resultado}')
+    return agregar_historial(historial, 'Calculadora Simple', str(resultado))
 
 
-def sumatoria_promedio():
+def sumatoria_promedio(historial):
     limpiar_consola()
     n = 1
     lista_numero = []
@@ -83,10 +137,10 @@ def sumatoria_promedio():
             promedio = (f'Su promedio es: {round(promedio, 2)}')
             resultado = (f'{sumatoria} y {promedio}')
     print(resultado)
-    return (f'Ingreso a "Calcular un promedio" {resultado}')
+    return agregar_historial(historial, 'Calcular promedio', str(resultado))
 
 
-def anio_bisiesto():
+def anio_bisiesto(historial):
     limpiar_consola()
     resultado = ''
     anio = int(input('Ingrese un año: '))
@@ -94,29 +148,29 @@ def anio_bisiesto():
         (anio % 100) != 0) | ((anio % 400) == 0) else 'No Bisiesto'
     resultado = (f'El año {anio} es {bisiesto}')
     print(resultado)
-    return (f'Ingreso a "Comprobar Año bisiesto" {resultado}')
+    return agregar_historial(historial, 'Comprobar Año bisiesto', str(resultado))
 
 
-def mayor_de_tres():
+def mayor_de_tres(historial):
     limpiar_consola()
     resultado = ''
     num_a = int(input('Ingrese un número '))
     num_b = int(input('Ingrese un segundo número '))
     num_c = int(input('Ingrese un tercer número '))
     if num_a > num_b & num_a > num_c:
-        resultado = (f'El primer número ingresado es el mayor de los tres {
-                     (num_a), (num_b), (num_c)}')
+        mensaje = 'El primer número ingresado es el mayor de los tres '
+        resultado = (f'{(mensaje), (num_a), (num_b), (num_c)}')
     elif num_a < num_b & num_b > num_c:
-        resultado = (f'El segudo número ingresado es el mayor de los tres {
-                     (num_a), (num_b), (num_c)}')
+        mensaje = 'El segudo número ingresado es el mayor de los tres '
+        resultado = (f'{(mensaje), (num_a), (num_b), (num_c)}')
     elif num_a < num_c & num_c > num_b:
-        resultado = (f'El tercer número ingresado es el mayor de los tres {
-                     (num_a), (num_b), (num_c)}')
+        mensaje = 'El tercer número ingresado es el mayor de los tres '
+        resultado = (f'{(mensaje), (num_a), (num_b), (num_c)}')
     print(resultado)
-    return (f'Ingreso a "Comprobar el Mayor de 3 n°" {resultado}')
+    return agregar_historial(historial, 'Comprobar el Mayor de 3 n°', str(resultado))
 
 
-def area_circulo():
+def area_circulo(historial):
     limpiar_consola()
     resultado = ''
     r = float(input('Ingrese el radio del circulo '))
@@ -124,31 +178,52 @@ def area_circulo():
     area = round(Pi * r**2, 2)
     resultado = (f'Para un circulo de radio {r} su área es {str(area)}')
     print(resultado)
-    return (f'Ingreso a "Area de un círculo" {resultado}')
+    return agregar_historial(historial, 'Calcular área de un círculo', str(resultado))
+
+def controlador_historial(historial):
+    while True:
+        vista_menu_historial()
+        eleccion = input('Elige una opción (0-3): ')
+        match eleccion:
+            case '1':
+                ver_historial(historial)
+            case '2':
+                editar_historial(historial)
+            case'3':
+                borrar_historial(historial)
+            case '0':
+                print('Saliendo de la aplicacion... \n  ¡Nos vemos!')
+                break
+            case _:
+                print('\n_Opción no válida, porfavor intente de nuevo.')
 
 
-def main():
+def main(historial = []):
+    if (len(historial) > 0):
+        lista_historial = historial
+    else:
+        lista_historial = []
     while True:
         vista_menu()
         eleccion = input('Elige una opción (0-5): ')
         match eleccion:
             case '1':
-                historial(calculadora_simple())
+                calculadora_simple(lista_historial)
             case '2':
-                historial(sumatoria_promedio())
+                sumatoria_promedio(lista_historial)
             case'3':
-                historial(anio_bisiesto())
+                area_circulo(lista_historial)
             case '4':
-                historial(mayor_de_tres())
+                mayor_de_tres(lista_historial)
             case '5':
-                historial(area_circulo())
+                anio_bisiesto(lista_historial)
             case '6':
-                historial(len(lista_historial))
+                controlador_historial(lista_historial)
             case '0':
-                print('Saliendo de la aplicacion. \nNos vemos...')
+                print('Saliendo de la aplicacion... \n  ¡Nos vemos!')
                 break
             case _:
-                print('\n Opción no válida, porfavor intente de nuevo.')
+                print('\n_Opción no válida, porfavor intente de nuevo.')
 
 
 if __name__ == "__main__":
