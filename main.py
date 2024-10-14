@@ -1,5 +1,7 @@
-from app import *
-from utils import vista_menu
+from termcolor import colored
+
+from core.app import *
+from helpers.menu import vista_menu
 
 
 def main():
@@ -9,7 +11,8 @@ def main():
 
     while True:
         vista_menu()
-        eleccion = input('Elige una opción (0-6): ')
+        eleccion = input(colored('\nElige una opción (0-6): ', 'yellow'))
+
         match eleccion:
             case '1':
                 calculadora_simple(lista_historial)
@@ -29,12 +32,12 @@ def main():
             case '6':
                 if (len(lista_historial) < 1):
                     limpiar_consola()
-                    print('Historial no disponible')
+                    print(colored('Historial no disponible','light_red', attrs=[]))
                     volver_menu()
                 else:
                     controlador_historial(lista_historial)
             case '0':
-                print('Saliendo de la aplicacion... \n  ¡Nos vemos!')
+                print(colored('Saliendo de la aplicacion... \n  ¡Nos vemos!', 'light_cyan'))
                 break
             case _:
                 print('\n_Opción no válida, porfavor intente de nuevo.')

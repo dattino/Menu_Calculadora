@@ -1,10 +1,14 @@
-from utils import volver_menu,  vista_menu_historial
+from helpers.utils import limpiar_consola
+from helpers.menu import vista_menu_historial, volver_menu
+
+
+from termcolor import colored
 
 
 def controlador_historial(historial):
     while True:
         vista_menu_historial()
-        eleccion = input('Elige una opción (0-3): ')
+        eleccion = input(colored('\nElige una opción (0-3): ', 'yellow'))
         match eleccion:
             case '1':
                 ver_historial(historial)
@@ -15,11 +19,14 @@ def controlador_historial(historial):
             case '0':
                 break
             case _:
-                print('\n_Opción no válida, porfavor intente de nuevo.')
+                print(
+                    colored('\n_Opción no válida, porfavor intente de nuevo.', 'light_red'))
 
 
 def ver_historial(historial):
+    limpiar_consola()
 
+    print(colored('\n--- Historial ---\n', 'light_blue', attrs=['bold',]))
     for index, entrada in enumerate(historial, start=1):
         fue_editado = '✔️' if entrada['editado'] else '❌'
         print(f'{index}. {entrada['nombre']} - Editado: {fue_editado}')
@@ -36,12 +43,13 @@ def agregar_historial(historial, nombre_aplicacion: str, resultado_almacenar: st
         'editado': False,
     }
     historial.append(entrada)
-    print(f'Entrada {funcion} agregada al historial')
+    print(colored(f'Entrada {funcion} agregada al historial', 'green'))
     return volver_menu()
 
 
 def editar_historial(historial):
     ver_historial(historial)
+
     try:
         index = int(input('>Ingrece el índice a editar: ')) - 1
         if index < 0 or index >= len(historial):
@@ -63,6 +71,7 @@ def editar_historial(historial):
 
 def borrar_historial(historial):
     ver_historial(historial)
+
     try:
         index = int(input('Ingrese el índice a borrar: ')) - 1
         if index < 0 or index >= len(historial):

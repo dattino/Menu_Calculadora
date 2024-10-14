@@ -1,5 +1,5 @@
-from historial import *
-from utils import limpiar_consola
+from core.crud_historial import *
+from helpers.utils import limpiar_consola
 
 
 def calculadora_simple(historial):
