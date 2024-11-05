@@ -4,7 +4,7 @@ from termcolor import colored
 from helpers.utils import limpiar_consola
 
 
-def vista_menu():
+def ver_menu():
     limpiar_consola()
     print(colored('\nMenú Calculadora:\n',
           'blue', attrs=['bold', 'underline',]))
@@ -17,16 +17,10 @@ def vista_menu():
     print(colored('0. Salir', 'red'))
 
 
-def vista_menu_historial():
+def ver_menu_historial():
     limpiar_consola()
-    print(colored('\n--- Menú Historial ---\n',
-          'blue', attrs=['bold',]))
+    print(colored('\n--- Menú Historial ---\n', 'blue', attrs=['bold',]))
     print(colored('1. Ver Historial', 'light_green'))
     print(colored('2. Editar Historial', 'light_green'))
     print(colored('3. Borar Entrada del Historial', 'light_green'))
     print(colored('0. Volver', 'red'))
-
-
-def volver_menu():
-    input(colored('\nPresione "Enter" para continuar...', 'light_blue'))
-    return

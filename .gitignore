@@ -8,4 +8,4 @@ env/*
 .python-version
 
 # Data
-historial.jsonenv
+historial.json

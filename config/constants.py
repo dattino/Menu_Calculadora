@@ -1,1 +1,1 @@
-TODOS_PATH = 'todos.json'
+HISTORIAL_PATH = 'historial.json'
