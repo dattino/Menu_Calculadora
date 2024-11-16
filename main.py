@@ -1,47 +1,50 @@
 from termcolor import colored
 
-
 from core.app import *
-from helpers.menu import ver_menu, limpiar_consola
-from helpers.file_helpers import read_json_file
-from config import constants
+from helpers.menu import ver_menu
+from helpers.utils import limpiar_consola, volver_menu
+from controller.historial_controller import HistorialController
 
 
 def main():
-    lista_historial = read_json_file(constants.HISTORIAL_PATH)
-    print(f'{lista_historial}')
+    HistorialController.listar()
     while True:
         ver_menu()
-        eleccion = input(colored('\nElige una opción (0-6): ', 'yellow'))
+        eleccion = input(
+            colored('\nElige una opción (0-6): ', 'yellow')
+        )
         match eleccion:
             case '1':
                 limpiar_consola()
-                calcular_operaciones_simple(lista_historial)
+                calcular_operaciones_simple()
             case '2':
                 limpiar_consola()
-                calcular_sumatoria_promedio(lista_historial)
+                calcular_sumatoria_promedio()
             case'3':
                 limpiar_consola()
-                calcular_area_circulo(lista_historial)
+                calcular_area_circulo()
             case '4':
                 limpiar_consola()
-                calcular_mayor_de_tres(lista_historial)
+                calcular_mayor_de_tres()
             case '5':
                 limpiar_consola()
-                verificar_anio_bisiesto(lista_historial)
+                verificar_anio_bisiesto()
             case '6':
-                if (len(lista_historial) < 1):
-                    limpiar_consola()
-                    print(colored('Historial no disponible', 'light_red', attrs=[]))
-                    volver_menu()
-                else:
-                    controlador_historial(lista_historial)
+                HistorialController.inicio()
             case '0':
                 print(
-                    colored('Saliendo de la aplicacion... \n  ¡Nos vemos!', 'light_cyan'))
+                    colored(
+                        'Saliendo de la aplicacion... \n  ¡Nos vemos!', 'light_cyan'
+                    )
+                )
                 break
             case _:
-                print('\n_Opción no válida, porfavor intente de nuevo.')
+                print(
+                    colored('\n Opción no válida, porfavor intente de nuevo.',
+                            'light_red', attrs=['bold']
+                    )
+                )
+                volver_menu()
 
 
 if __name__ == "__main__":

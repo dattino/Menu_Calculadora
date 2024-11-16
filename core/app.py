@@ -1,10 +1,10 @@
 from termcolor import colored
 
 
-from core.crud_historial import *
+from controller.historial_controller import HistorialController
 
 
-def calcular_operaciones_simple(historial) -> str:
+def calcular_operaciones_simple() -> str:
     try:
         num_1 = int(input('Ingrese un número '))
         operacion = input('Ingrese una operacion matemética (+, -, *, /) ')
@@ -25,18 +25,22 @@ def calcular_operaciones_simple(historial) -> str:
                     resultado = (f'{num_1} / {num_2} = {num_1 / num_2}')
             case _:
                 print(colored(
-                    'Operación no válida, porfavor intente de nuevo.', 'light_red', attrs=['bold']))
-                return calcular_operaciones_simple(historial)
+                    'Operación no válida, porfavor intente de nuevo.', 'light_red', attrs=['bold'])
+                )
+                return calcular_operaciones_simple()
         print(resultado)
-        return agregar_historial(historial, 'Calculadora Simple', str(resultado))
+        nombre = 'Calculadora Simple'
+        operacion = str(resultado)
+        HistorialController.agregar(nombre, operacion)
+        return
     except ValueError:
-        print(colored('Entrada errónea, porfavor ingrese un número.',
-              'light_red', attrs=['bold']))
-        calcular_operaciones_simple(historial)
+        msj_error = 'Entrada errónea, porfavor ingrese un número.'
+        print(colored(msj_error, 'red'))
+        calcular_operaciones_simple()
     return
 
 
-def calcular_sumatoria_promedio(historial) -> str:
+def calcular_sumatoria_promedio() -> str:
     try:
         n = 1
         lista_numero = []
@@ -56,15 +60,18 @@ def calcular_sumatoria_promedio(historial) -> str:
                 resultado = (
                     f'De {cantidad_de_numeros} n° {mensaje_sumatoria} Y {mensaje_promedio}')
         print(resultado)
-        return agregar_historial(historial, 'Calcular promedio', str(resultado))
+        nombre = 'Calcular promedio'
+        operacion = str(resultado)
+        HistorialController.agregar(nombre, operacion)
+        return
     except ValueError:
-        print(colored('Entrada errónea, porfavor ingrese un número.',
-              'light_red', attrs=['bold']))
-        calcular_sumatoria_promedio(historial)
-    return
+        msj_error = 'Entrada errónea, porfavor ingrese un número.'
+        print(colored(msj_error, 'red'))
+        calcular_sumatoria_promedio()
+        return
 
 
-def verificar_anio_bisiesto(historial) -> str:
+def verificar_anio_bisiesto() -> str:
     try:
         resultado = ''
         anio = int(input('Ingrese un año: '))
@@ -72,15 +79,18 @@ def verificar_anio_bisiesto(historial) -> str:
             (anio % 100) != 0) | ((anio % 400) == 0) else 'No Bisiesto'
         resultado = (f'El año {anio} es {bisiesto}')
         print(resultado)
-        return agregar_historial(historial, 'Comprobar Año bisiesto', str(resultado))
+        nombre = 'Comprobar Año bisiesto'
+        operacion = str(resultado)
+        HistorialController.agregar(nombre, operacion)
+        return
     except ValueError:
-        print(colored('Entrada errónea, porfavor ingrese un número.',
-              'light_red', attrs=['bold']))
-        verificar_anio_bisiesto(historial)
-    return
+        msj_error = 'Entrada errónea, porfavor ingrese un número.'
+        print(colored(msj_error, 'red'))
+        verificar_anio_bisiesto()
+        return
 
 
-def calcular_mayor_de_tres(historial) -> str:
+def calcular_mayor_de_tres() -> str:
     try:
         resultado = ''
         num_a = int(input('Ingrese un número '))
@@ -96,16 +106,18 @@ def calcular_mayor_de_tres(historial) -> str:
             mensaje = 'El tercer número ingresado es el mayor de los tres '
             resultado = (f'{(mensaje), (num_a), (num_b), (num_c)}')
         print(resultado)
-        return agregar_historial(historial, 'Comprobar el Mayor de 3 n°', str(resultado))
+        nombre = 'Comprobar el Mayor de 3 n°'
+        operacion = str(resultado)
+        HistorialController.agregar(nombre, operacion)
+        return
     except ValueError:
-        print(colored('Entrada errónea, porfavor ingrese un número.',
-              'light_red', attrs=['bold']))
-        calcular_mayor_de_tres(historial)
+        msj_error = 'Entrada errónea, porfavor ingrese un número.'
+        print(colored(msj_error, 'red'))
+        calcular_mayor_de_tres()
     return
 
 
-def calcular_area_circulo(historial) -> str:
-    limpiar_consola()
+def calcular_area_circulo() -> str:
     try:
         resultado = ''
         r = float(input('Ingrese el radio del circulo '))
@@ -113,9 +125,12 @@ def calcular_area_circulo(historial) -> str:
         area = round(Pi * r**2, 2)
         resultado = (f'Para un circulo de radio {r} su área es {str(area)}')
         print(resultado)
-        return agregar_historial(historial, 'Calcular área de un círculo', str(resultado))
+        nombre = 'Calcular área de un círculo'
+        operacion = str(resultado)
+        HistorialController.agregar(nombre, operacion)
+        return
     except ValueError:
-        print(colored('Entrada errónea, porfavor ingrese un número.',
-              'light_red', attrs=['bold']))
-        calcular_area_circulo(historial)
+        msj_error = 'Entrada errónea, porfavor ingrese un número.'
+        print(colored(msj_error, 'red'))
+        calcular_area_circulo()
     return
