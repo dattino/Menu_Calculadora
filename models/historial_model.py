@@ -21,10 +21,14 @@ class Historial(Base):
             raise Exception('Nombre inválido')
         self.__nombre = nuevo_nombre
 
-    @property
-    def __dict__(self):
+    def parse_to_dict(self) -> dict:
         return {
             'nombre': self.__nombre,
             'operacion': self.operacion,
             'editado': self.editado,
         }
+
+    @classmethod
+    def parse_from_dict(cls, item: dict) -> 'Historial':
+        #return cls(nombre=item['nombre'], peracion=item['operacion'], editado=item['editado'])
+        return cls(**item)
