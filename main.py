@@ -8,6 +8,7 @@ from controller.historial_controller import HistorialController
 
 def main():
     while True:
+        limpiar_consola()
         HistorialController.ver()
         ver_menu()
         eleccion = input(
@@ -45,7 +46,6 @@ def main():
                 )
                 break
             case _:
-                limpiar_consola()
                 print(
                     colored('\n Opción no válida, porfavor intente de nuevo.',
                             'light_red', attrs=['bold']

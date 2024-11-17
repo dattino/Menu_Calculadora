@@ -1,12 +1,13 @@
 from config import constants
 
-from .base_model import Base
+from .historial_base_model import HistorialBase
 
 
-class Historial(Base):
+class CalculadoraHistorial(HistorialBase):
     filename = constants.HISTORIAL_PATH
 
     def __init__(self, nombre: str, operacion: str, editado: bool = False) -> None:
+        super().__init__(editado)
         self.__nombre = nombre
         self.operacion = operacion
         self.editado = editado
@@ -14,6 +15,10 @@ class Historial(Base):
     @property
     def nombre(self):
         return self.__nombre.title()
+    
+    def __str__(self):
+        estado_editado = '✔️' if self.editado else '❌'
+        return f'{self.nombre}  |  Modificado: {estado_editado}\n   {self.operacion}'
 
     @nombre.setter
     def nombre(self, nuevo_nombre):
@@ -29,6 +34,6 @@ class Historial(Base):
         }
 
     @classmethod
-    def parse_from_dict(cls, item: dict) -> 'Historial':
+    def parse_from_dict(cls, item: dict) -> 'CalculadoraHistorial':
         #return cls(nombre=item['nombre'], peracion=item['operacion'], editado=item['editado'])
         return cls(**item)

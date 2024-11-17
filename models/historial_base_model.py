@@ -4,9 +4,16 @@ from typing import List
 from helpers.file_helpers import write_json_file, read_json_file
 
 
-class Base(ABC):
-    lista: List['Base'] = []
-    filename = None
+class HistorialBase(ABC):
+    lista: List['HistorialBase'] = []
+    filename: str = None
+
+    def __init__(self, estado):
+        self.estado = estado
+
+    @abstractmethod
+    def __str__(self):
+        pass
 
     @classmethod
     def __verificar_filename(cls):
@@ -27,7 +34,7 @@ class Base(ABC):
 
     @classmethod
     @abstractmethod
-    def parse_from_dict(cls, item: dict) -> 'Base':
+    def parse_from_dict(cls, item: dict) -> 'HistorialBase':
         pass
 
     @classmethod

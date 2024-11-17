@@ -1,7 +1,7 @@
 from termcolor import colored
 
 
-from models.historial_model import Historial
+from models.calculadora_historial_model import CalculadoraHistorial
 from helpers.utils import limpiar_consola, volver_menu
 from helpers.menu import ver_menu_historial
 
@@ -9,8 +9,8 @@ from helpers.menu import ver_menu_historial
 class HistorialController:
     @classmethod
     def inicio(cls):
-        if not Historial.lista:
-            Historial.leer()
+        if not CalculadoraHistorial.lista:
+            CalculadoraHistorial.leer()
         while True:
             limpiar_consola()
             ver_menu_historial()
@@ -46,9 +46,9 @@ class HistorialController:
     def agregar(cls, nombre: str, operacion: str) -> list:
         nombre = nombre
         operacion = operacion
-        registro = Historial(nombre, operacion)
-        Historial.lista.append(registro)
-        Historial.guardar()
+        registro = CalculadoraHistorial(nombre, operacion)
+        CalculadoraHistorial.lista.append(registro)
+        CalculadoraHistorial.guardar()
         print(
             colored(f'Entrada {nombre} agregada al historial', 'green')
         )
@@ -56,7 +56,7 @@ class HistorialController:
 
     @classmethod
     def consultar(cls) -> list:
-        if not Historial.lista:
+        if not CalculadoraHistorial.lista:
             print(
                 colored('Historial no disponible', 'light_red')
             )
@@ -65,35 +65,31 @@ class HistorialController:
             print(
                 colored('\n--- Historial ---\n', 'light_blue', attrs=['bold'])
             )
-            for index, entrada in enumerate(Historial.lista, start=1):
-                estado_editado = '✔️' if entrada.editado else '❌'
+            for index, entrada in enumerate(CalculadoraHistorial.lista, start=1):
+                
                 print(
                     colored(
-                        f'{index}. {
-                            entrada.nombre} - Editado: {estado_editado}', 'dark_grey'
+                        f'{index}. {entrada}', 'dark_grey'
                     )
-                )
-                print(
-                    colored(f'   Operacion: {entrada.operacion}', 'grey')
                 )
 
     @classmethod
     def editar(cls):
-        if (Historial.lista):
+        if (CalculadoraHistorial.lista):
             try:
                 index = int(
                     input('\nIngrece el índice a editar o 0 para salir: ')) - 1
-                if (index < -1 or index >= len(Historial.lista)):
+                if (index < -1 or index >= len(CalculadoraHistorial.lista)):
                     print(colored('Indice no disponible.', 'light_magenta'))
                     return HistorialController.editar()
-                elif (index > -1 or index >= len(Historial.lista)):
-                    entrada = Historial.lista[index]
+                elif (index > -1 or index >= len(CalculadoraHistorial.lista)):
+                    entrada = CalculadoraHistorial.lista[index]
                     entrada.nombre = input(
                         f'Ingrese el nuevo nombre (actual: {entrada.nombre}): ') or entrada.nombre
                     entrada.operacion = input(
                         f'Ingrese la nueva operación (actual: {entrada.operacion}): ') or entrada.operacion
                     entrada.editado = True
-                    Historial.guardar()
+                    CalculadoraHistorial.guardar()
                     print(
                         colored(
                             f'"{entrada.nombre}" actualizada correctamente.', 'light_green')
@@ -110,11 +106,11 @@ class HistorialController:
 
     @classmethod
     def borrar(cls):
-        if (len(Historial.lista) > 0):
+        if (len(CalculadoraHistorial.lista) > 0):
             try:
                 index = int(
                     input('\nIngrece el índice a editar o 0 para salir: ')) - 1
-                if (index < -1 or index >= len(Historial.lista)):
+                if (index < -1 or index >= len(CalculadoraHistorial.lista)):
                     print(
                         colored('Indice no disponible.', 'light_magenta')
                     )
@@ -122,8 +118,8 @@ class HistorialController:
                 elif (index == -1):
                     return
                 else:
-                    borrar_entrada = Historial.lista.pop(index)
-                    Historial.guardar()
+                    borrar_entrada = CalculadoraHistorial.lista.pop(index)
+                    CalculadoraHistorial.guardar()
                     print(
                         colored(
                             f'Entrada "{borrar_entrada.nombre}" borrada correctamente.', on_color='on_red'
@@ -140,5 +136,5 @@ class HistorialController:
 
     @classmethod
     def ver(cls):
-        if not Historial.lista:
-            Historial.leer()
+        if not CalculadoraHistorial.lista:
+            CalculadoraHistorial.leer()
