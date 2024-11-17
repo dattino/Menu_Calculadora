@@ -1,25 +1,30 @@
-from typing import List
-
-
-from helpers.file_helpers import write_json_file, read_json_file
 from config import constants
 
+from .base_model import Base
 
-class Historial:
-    todo: List['Historial'] = []
+
+class Historial(Base):
+    filename = constants.HISTORIAL_PATH
 
     def __init__(self, nombre: str, operacion: str, editado: bool = False) -> None:
-        self.nombre = nombre
+        self.__nombre = nombre
         self.operacion = operacion
         self.editado = editado
 
-    @classmethod
-    def guardar(cls):
-        write_json_file(constants.HISTORIAL_PATH, [historial.__dict__ for historial in cls.todo])
+    @property
+    def nombre(self):
+        return self.__nombre.title()
 
-    @classmethod
-    def leer(cls):
-        for historial_dict in read_json_file(constants.HISTORIAL_PATH):
-            historial_obj = Historial(
-                nombre = historial_dict['nombre'], operacion = historial_dict['operacion'], editado = historial_dict['editado'])
-            cls.todo.append(historial_obj)
+    @nombre.setter
+    def nombre(self, nuevo_nombre):
+        if not nuevo_nombre.strip():
+            raise Exception('Nombre inválido')
+        self.__nombre = nuevo_nombre
+
+    @property
+    def __dict__(self):
+        return {
+            'nombre': self.__nombre,
+            'operacion': self.operacion,
+            'editado': self.editado,
+        }

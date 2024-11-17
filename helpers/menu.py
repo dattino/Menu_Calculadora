@@ -1,11 +1,7 @@
 from termcolor import colored
 
 
-from helpers.utils import limpiar_consola
-
-
 def ver_menu():
-    limpiar_consola()
     print(
         colored('\nMenú Calculadora:\n', 'blue', attrs=['bold', 'underline'])
     )
@@ -33,7 +29,6 @@ def ver_menu():
 
 
 def ver_menu_historial():
-    limpiar_consola()
     print(
         colored('\n--- Menú Historial ---\n', 'blue', attrs=['bold', 'underline']))
     print(

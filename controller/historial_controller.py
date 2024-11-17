@@ -7,104 +7,138 @@ from helpers.menu import ver_menu_historial
 
 
 class HistorialController:
-
     @classmethod
     def inicio(cls):
-        Historial.leer()
-        limpiar_consola()
+        if not Historial.lista:
+            Historial.leer()
         while True:
+            limpiar_consola()
             ver_menu_historial()
-            eleccion = input(colored('\nElige una opción (0-3): ', 'yellow'))
+            eleccion = input(
+                colored('\nElige una opción (0-3): ', 'yellow'))
             match eleccion:
                 case '1':
+                    limpiar_consola()
                     cls.consultar()
+                    volver_menu()
                 case '2':
+                    limpiar_consola()
                     cls.consultar()
                     cls.editar()
+                    volver_menu()
                 case'3':
+                    limpiar_consola()
                     cls.consultar()
                     cls.borrar()
+                    volver_menu()
                 case '0':
+                    limpiar_consola()
                     break
                 case _:
+                    limpiar_consola()
                     print(
-                        colored('\n_Opción no válida, porfavor intente de nuevo.', 'light_red'))
-                    
-    @classmethod
-    def listar(cls):
-        Historial.leer()
-        return Historial.todo
-        
-
-
-
+                        colored(
+                            '\nOpción no válida, porfavor intente de nuevo.', 'light_red')
+                    )
+                    volver_menu()
 
     @classmethod
-    def agregar(cls, nombre: str, operacion: str, editado: bool = False) -> list:
-        funcion = nombre
-        descripcion = operacion
-        estado = editado
-        registro_nuevo = Historial(funcion, descripcion, estado)
-        Historial.todo.append(registro_nuevo)
-        Historial.guardar
-        print(colored(f'Entrada {funcion} agregada al historial', 'green'))
-        return volver_menu()
+    def agregar(cls, nombre: str, operacion: str) -> list:
+        nombre = nombre
+        operacion = operacion
+        registro = Historial(nombre, operacion)
+        Historial.lista.append(registro)
+        Historial.guardar()
+        print(
+            colored(f'Entrada {nombre} agregada al historial', 'green')
+        )
+        return
 
     @classmethod
     def consultar(cls) -> list:
-        limpiar_consola()
-        if not Historial.todo:
-            print(colored('Historial no disponible', 'light_red'))
-            return volver_menu()
+        if not Historial.lista:
+            print(
+                colored('Historial no disponible', 'light_red')
+            )
+            return
         else:
-            print(colored('\n--- Historial ---\n',
-                  'light_blue', attrs=['bold']))
-            for index, entrada in enumerate(Historial.todo, start=1):
+            print(
+                colored('\n--- Historial ---\n', 'light_blue', attrs=['bold'])
+            )
+            for index, entrada in enumerate(Historial.lista, start=1):
                 estado_editado = '✔️' if entrada.editado else '❌'
-                print(colored(f'{index}. {
-                      entrada.nombre} - Editado: {estado_editado}', 'dark_grey'))
-                print(colored(f'   Operacion: {entrada.operacion}', 'grey'))
-            return volver_menu()
+                print(
+                    colored(
+                        f'{index}. {
+                            entrada.nombre} - Editado: {estado_editado}', 'dark_grey'
+                    )
+                )
+                print(
+                    colored(f'   Operacion: {entrada.operacion}', 'grey')
+                )
 
     @classmethod
     def editar(cls):
-        if (Historial.todo):
+        if (Historial.lista):
             try:
                 index = int(
-                    input('Ingrece el índice a editar o 0 para salir: ')) - 1
-                if (index < 0 or index >= len(Historial.todo)):
+                    input('\nIngrece el índice a editar o 0 para salir: ')) - 1
+                if (index < -1 or index >= len(Historial.lista)):
                     print(colored('Indice no disponible.', 'light_magenta'))
-                    return volver_menu()
-                entrada = Historial.todo[index]
-                entrada.nombre = input(
-                    f'Ingrese el nuevo nombre (actual: {entrada.nombre}): ') or entrada.nombre
-                entrada.operacion = input(
-                    f'Ingrese la nueva operación (actual: {entrada.operacion}): ') or entrada.operacion
-                entrada.editado = True
-                Historial.guardar
-                print(
-                    colored(f'"{entrada.nombre}" actualizada correctamente.', 'light_green'))
-                return volver_menu()
+                    return HistorialController.editar()
+                elif (index > -1 or index >= len(Historial.lista)):
+                    entrada = Historial.lista[index]
+                    entrada.nombre = input(
+                        f'Ingrese el nuevo nombre (actual: {entrada.nombre}): ') or entrada.nombre
+                    entrada.operacion = input(
+                        f'Ingrese la nueva operación (actual: {entrada.operacion}): ') or entrada.operacion
+                    entrada.editado = True
+                    Historial.guardar()
+                    print(
+                        colored(
+                            f'"{entrada.nombre}" actualizada correctamente.', 'light_green')
+                    )
+                    return
+                elif (index == -1):
+                    return
             except ValueError:
-                print(colored('Entrada errónea, porfavor ingrese un número.',
-                              'light_red', attrs=['bold']))
-            return volver_menu()
+                mensaje_error = 'Entrada errónea, porfavor ingrese un número.'
+                print(
+                    colored(mensaje_error, 'light_red', attrs=['bold'])
+                )
+                return HistorialController.editar()
 
     @classmethod
     def borrar(cls):
-        if (len(Historial.todo) > 0):
+        if (len(Historial.lista) > 0):
             try:
                 index = int(
-                    input('Ingrece el índice a editar o 0 para salir: ')) - 1
-                if (index < 0 or index >= len(Historial.todo)):
-                    print(colored('Indice no disponible.', 'light_magenta'))
-                    return volver_menu()
-                borrar_entrada = Historial.todo.pop(index)
-                Historial.guardar
-                print(colored(f'Entrada "{
-                    borrar_entrada.nombre}" borrada correctamente.', on_color='on_red'))
-                return volver_menu()
+                    input('\nIngrece el índice a editar o 0 para salir: ')) - 1
+                if (index < -1 or index >= len(Historial.lista)):
+                    print(
+                        colored('Indice no disponible.', 'light_magenta')
+                    )
+                    return HistorialController.borrar()
+                elif (index == -1):
+                    return
+                else:
+                    borrar_entrada = Historial.lista.pop(index)
+                    Historial.guardar()
+                    print(
+                        colored(
+                            f'Entrada "{borrar_entrada.nombre}" borrada correctamente.', on_color='on_red'
+                        )
+                    )
+                    return
             except ValueError:
-                print(colored('Entrada errónea, porfavor ingrese un número.',
-                              'light_red', attrs=['bold']))
-            return volver_menu()
+                print(
+                    colored('Entrada errónea, porfavor ingrese un número.',
+                            'light_red', attrs=['bold']
+                            )
+                )
+            return HistorialController.borrar()
+
+    @classmethod
+    def ver(cls):
+        if not Historial.lista:
+            Historial.leer()

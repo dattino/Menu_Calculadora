@@ -32,12 +32,11 @@ def calcular_operaciones_simple() -> str:
         nombre = 'Calculadora Simple'
         operacion = str(resultado)
         HistorialController.agregar(nombre, operacion)
-        return
+        return 
     except ValueError:
         msj_error = 'Entrada errónea, porfavor ingrese un número.'
         print(colored(msj_error, 'red'))
-        calcular_operaciones_simple()
-    return
+    return calcular_operaciones_simple()
 
 
 def calcular_sumatoria_promedio() -> str:
@@ -50,7 +49,7 @@ def calcular_sumatoria_promedio() -> str:
             if (n != 0):
                 lista_numero.append(n)
                 resultado = (lista_numero)
-            else:
+            elif (len(lista_numero) > 0):
                 suma = sum(lista_numero)
                 cantidad_de_numeros = len(lista_numero)
                 promedio = suma / cantidad_de_numeros
@@ -59,16 +58,15 @@ def calcular_sumatoria_promedio() -> str:
                 mensaje_promedio = (f'Su promedio es: {round(promedio, 2)}')
                 resultado = (
                     f'De {cantidad_de_numeros} n° {mensaje_sumatoria} Y {mensaje_promedio}')
-        print(resultado)
-        nombre = 'Calcular promedio'
-        operacion = str(resultado)
-        HistorialController.agregar(nombre, operacion)
-        return
+                print(resultado)
+                nombre = 'Calcular promedio'
+                operacion = str(resultado)
+                HistorialController.agregar(nombre, operacion)
+                return
     except ValueError:
         msj_error = 'Entrada errónea, porfavor ingrese un número.'
         print(colored(msj_error, 'red'))
-        calcular_sumatoria_promedio()
-        return
+        return calcular_sumatoria_promedio()
 
 
 def verificar_anio_bisiesto() -> str:
@@ -86,8 +84,7 @@ def verificar_anio_bisiesto() -> str:
     except ValueError:
         msj_error = 'Entrada errónea, porfavor ingrese un número.'
         print(colored(msj_error, 'red'))
-        verificar_anio_bisiesto()
-        return
+        return verificar_anio_bisiesto()
 
 
 def calcular_mayor_de_tres() -> str:
@@ -96,14 +93,14 @@ def calcular_mayor_de_tres() -> str:
         num_a = int(input('Ingrese un número '))
         num_b = int(input('Ingrese un segundo número '))
         num_c = int(input('Ingrese un tercer número '))
-        if num_a > num_b & num_a > num_c:
-            mensaje = 'El primer número ingresado es el mayor de los tres '
+        if ((num_a > num_b) & (num_a > num_c)):
+            mensaje = 'El primer número ingresado es el mayor de los tres'
             resultado = (f'{(mensaje), (num_a), (num_b), (num_c)}')
-        elif num_a < num_b & num_b > num_c:
-            mensaje = 'El segudo número ingresado es el mayor de los tres '
+        elif ((num_a < num_b) & (num_b > num_c)):
+            mensaje = 'El segudo número ingresado es el mayor de los tres'
             resultado = (f'{(mensaje), (num_a), (num_b), (num_c)}')
-        elif num_a < num_c & num_c > num_b:
-            mensaje = 'El tercer número ingresado es el mayor de los tres '
+        elif ((num_a < num_c) & (num_c > num_b)):
+            mensaje = 'El tercer número ingresado es el mayor de los tres'
             resultado = (f'{(mensaje), (num_a), (num_b), (num_c)}')
         print(resultado)
         nombre = 'Comprobar el Mayor de 3 n°'
@@ -113,8 +110,7 @@ def calcular_mayor_de_tres() -> str:
     except ValueError:
         msj_error = 'Entrada errónea, porfavor ingrese un número.'
         print(colored(msj_error, 'red'))
-        calcular_mayor_de_tres()
-    return
+    return calcular_mayor_de_tres()
 
 
 def calcular_area_circulo() -> str:
@@ -132,5 +128,4 @@ def calcular_area_circulo() -> str:
     except ValueError:
         msj_error = 'Entrada errónea, porfavor ingrese un número.'
         print(colored(msj_error, 'red'))
-        calcular_area_circulo()
-    return
+    return calcular_area_circulo()
